@@ -1,10 +1,9 @@
-/// Author: Amit (amitxd)
-/// Description: Offline caching service to save pages to disk, check for active connectivity, and track bulk downloads.
-
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// A service that handles offline caching of the book's HTML pages,
+/// check internet connectivity, and tracking bulk download status.
 class OfflineCacheService {
   static const _subDir = 'rust_book_offline_cache';
   static const _bulkCacheKey = 'rust_book_fully_cached_bulk';
@@ -18,7 +17,9 @@ class OfflineCacheService {
     }
     // Extract path segment to keep name clean and readable
     final uri = Uri.parse(cleanUrl);
-    String pathSeg = uri.path.replaceAll('/', '_').replaceAll(RegExp(r'[^a-zA-Z0-9_\-]'), '');
+    String pathSeg = uri.path
+        .replaceAll('/', '_')
+        .replaceAll(RegExp(r'[^a-zA-Z0-9_\-]'), '');
     if (pathSeg.isEmpty || pathSeg == '_') {
       pathSeg = 'index';
     }
@@ -36,13 +37,12 @@ class OfflineCacheService {
     return File('${cacheDir.path}/$filename');
   }
 
-  /// Checks if active internet connectivity is available using a direct socket connection.
+  /// Checks if active internet connectivity is available using DNS lookup.
   Future<bool> hasInternetConnection() async {
     try {
-      // Connect directly to Google Public DNS to avoid slow DNS resolution timeouts when offline
-      final socket = await Socket.connect('8.8.8.8', 53, timeout: const Duration(milliseconds: 1500));
-      socket.destroy();
-      return true;
+      final result = await InternetAddress.lookup('google.com')
+          .timeout(const Duration(milliseconds: 2500));
+      return result.isNotEmpty && result.first.rawAddress.isNotEmpty;
     } catch (_) {
       return false;
     }

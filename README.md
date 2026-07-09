@@ -1,20 +1,23 @@
 # Rust Book Reader
 
-A dark-themed glassmorphism reader app wrapping the Cognitive Engineering Lab fork of the Rust Book.
+A simple dark reader app for the Rust Book with an integrated Gemini tutor.
 
 Author: Amit (amitxd)
 
-## Features
-- Glassmorphic navbar controls and drifting background animations.
-- Entire book downloading for 100% offline reading with cache sync support.
-- Embedded Gemini Tutor with persistent conversation history.
-- Hardware-encrypted key storage.
-- Custom animated splash screen.
+### Features
+- Native study dashboard with reading progress & time tracker
+- 120Hz display refresh support
+- Highlight text selection to explain with Gemini
+- Offline mode & cache synchronization
+- Encrypted API key storage
 
-## Running the App
-- Fetch dependencies: `flutter pub get`
-- Run application: `flutter run`
+### Libraries
+- webview_flutter
+- google_generative_ai
+- flutter_secure_storage
+- shared_preferences
+- flutter_markdown_plus / flutter_highlight
 
-## Building for Release
-- Build release APK: `flutter build apk --release`
-- Build App Bundle: `flutter build appbundle --release`
+### Commands
+- Run: `flutter run`
+- Build (Optimized arm64): `flutter build apk --release --target-platform=android-arm64 --obfuscate --split-debug-info=build/app/outputs/symbols --no-keep-dwarf`

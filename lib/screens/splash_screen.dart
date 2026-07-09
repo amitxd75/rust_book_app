@@ -1,7 +1,3 @@
-/// Author: Amit (amitxd)
-/// Description: A gorgeous, hardware-accelerated glassmorphic splash screen with elastic entrance animations.
-/// Credits amitxd and Cognitive Engineering Lab fork of the Rust Book. Handles timers cleanly to avoid test leaks.
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,14 +6,18 @@ import '../theme/app_theme.dart';
 import '../widgets/circles.dart';
 import '../widgets/glass_widgets.dart';
 
+/// A splash screen displaying an intro animation and the app title
+/// before redirecting to the main reader screen.
 class SplashScreen extends StatefulWidget {
+  /// Creates the [SplashScreen] widget.
   const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _fadeAnimation;
   late final Animation<double> _scaleAnimation;
@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1600),
@@ -47,8 +47,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       if (mounted) {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => const BookScreen(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const BookScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               return FadeTransition(
                 opacity: animation,
                 child: child,
@@ -63,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancel timer on dispose to prevent memory leaks and widget test invariant crashes
+    _timer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -76,9 +78,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            // 1. Drifting animated background circles (extends behind the splash container)
+            // 1. Drifting animated background circles
             const CirclesBackground(),
-  
+
             // 2. Main content overlay
             Center(
               child: FadeTransition(
@@ -98,15 +100,18 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                           Container(
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFDE7B3F).withOpacity(0.08),
+                              color: const Color(0xFFDE7B3F)
+                                  .withValues(alpha: 0.08),
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: const Color(0xFFDE7B3F).withOpacity(0.25),
+                                color: const Color(0xFFDE7B3F)
+                                    .withValues(alpha: 0.25),
                                 width: 1.5,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFFDE7B3F).withOpacity(0.1),
+                                  color: const Color(0xFFDE7B3F)
+                                      .withValues(alpha: 0.1),
                                   blurRadius: 20,
                                   spreadRadius: 2,
                                 ),
@@ -133,13 +138,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                           Text(
                             'Cognitive Engineering Lab Fork',
                             style: TextStyle(
-                              color: const Color(0xFF2083A4), // Ocean Blue accent
+                              color:
+                                  const Color(0xFF2083A4), // Ocean Blue accent
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               letterSpacing: 1.0,
                               shadows: [
                                 Shadow(
-                                  color: const Color(0xFF2083A4).withOpacity(0.3),
+                                  color: const Color(0xFF2083A4)
+                                      .withValues(alpha: 0.3),
                                   blurRadius: 8,
                                 ),
                               ],
@@ -159,7 +166,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                           Text(
                             'Made by amitxd',
                             style: TextStyle(
-                              color: AppColors.textMuted.withOpacity(0.6),
+                              color: AppColors.textMuted.withValues(alpha: 0.6),
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1.2,

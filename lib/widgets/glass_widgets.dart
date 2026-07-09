@@ -2,22 +2,33 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
-/// A premium glass panel with authentic blur, faint outline, and soft shadow.
-/// Skips BackdropFilter if blur <= 0 for maximum GPU optimization.
+/// A glassmorphic container that applies a blur backdrop filter, faint borders,
+/// and container shading to simulate a frosted glass look.
 class GlassContainer extends StatelessWidget {
+  /// The child widget to render inside the glass container.
   final Widget child;
+
+  /// Internal padding for the glass container.
   final EdgeInsetsGeometry padding;
+
+  /// Border radius of the glass panel.
   final BorderRadius borderRadius;
+
+  /// The strength of the backdrop blur filter. Set to 0.0 to disable blur.
   final double blur;
+
+  /// The solid background color of the glass fill.
   final Color fillColor;
 
+  /// Creates a [GlassContainer] widget.
   const GlassContainer({
     super.key,
     required this.child,
     this.padding = const EdgeInsets.all(12),
     this.borderRadius = const BorderRadius.all(Radius.circular(24)),
     this.blur = 18.0,
-    this.fillColor = const Color(0x02FFFFFF), // ~0.8% white for absolute transparency
+    this.fillColor =
+        const Color(0x02FFFFFF), // ~0.8% white for absolute transparency
   });
 
   @override
@@ -28,7 +39,7 @@ class GlassContainer extends StatelessWidget {
         borderRadius: borderRadius,
         // Extremely faint glass border outline
         border: Border.all(
-          color: Colors.white.withOpacity(0.015),
+          color: Colors.white.withValues(alpha: 0.015),
           width: 0.8,
         ),
         gradient: LinearGradient(
@@ -36,7 +47,7 @@ class GlassContainer extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             fillColor,
-            fillColor.withOpacity(0.2),
+            fillColor.withValues(alpha: 0.2),
           ],
         ),
       ),
@@ -49,7 +60,7 @@ class GlassContainer extends StatelessWidget {
         // High-end soft shadow to make the glass panel float
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.12),
+            color: Colors.black.withValues(alpha: 0.12),
             blurRadius: 20,
             spreadRadius: -4,
             offset: const Offset(0, 8),
@@ -71,13 +82,25 @@ class GlassContainer extends StatelessWidget {
 
 /// An interactive glass circular button (icon inside a circle) with dynamic active gradients and tap scaling.
 class GlassIconButton extends StatefulWidget {
+  /// The icon widget to display inside the button.
   final Widget icon;
+
+  /// The callback function called when the button is tapped.
   final VoidCallback? onTap;
+
+  /// Whether the button is currently in an active or highlighted state.
   final bool active;
-  final Color? activeColor; // Color-matched highlight background
+
+  /// Color-matched highlight background when the button is active.
+  final Color? activeColor;
+
+  /// The diameter of the circular button.
   final double size;
+
+  /// Optional tooltip text to show on long press.
   final String? tooltip;
 
+  /// Creates a [GlassIconButton] widget.
   const GlassIconButton({
     super.key,
     required this.icon,
@@ -131,7 +154,7 @@ class _GlassIconButtonState extends State<GlassIconButton> {
               boxShadow: widget.active
                   ? [
                       BoxShadow(
-                        color: highlightColor.withOpacity(0.14),
+                        color: highlightColor.withValues(alpha: 0.14),
                         blurRadius: 8,
                         spreadRadius: 0.2,
                       ),
@@ -149,9 +172,9 @@ class _GlassIconButtonState extends State<GlassIconButton> {
                     shape: BoxShape.circle,
                     // Extremely subtle border outline
                     border: Border.all(
-                      color: widget.active 
-                          ? highlightColor.withOpacity(0.3) 
-                          : Colors.white.withOpacity(0.02),
+                      color: widget.active
+                          ? highlightColor.withValues(alpha: 0.3)
+                          : Colors.white.withValues(alpha: 0.02),
                       width: 0.8,
                     ),
                     gradient: widget.active
@@ -159,16 +182,16 @@ class _GlassIconButtonState extends State<GlassIconButton> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              highlightColor.withOpacity(0.55),
-                              highlightColor.withOpacity(0.35),
+                              highlightColor.withValues(alpha: 0.55),
+                              highlightColor.withValues(alpha: 0.35),
                             ],
                           )
                         : LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              Colors.white.withOpacity(0.04),
-                              Colors.white.withOpacity(0.002),
+                              Colors.white.withValues(alpha: 0.04),
+                              Colors.white.withValues(alpha: 0.002),
                             ],
                           ),
                   ),
