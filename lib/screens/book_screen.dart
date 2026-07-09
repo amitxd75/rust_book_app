@@ -634,8 +634,8 @@ class _BookScreenState extends State<BookScreen> with WidgetsBindingObserver {
     );
   }
 
-  void _openGeminiChat() {
-    showModalBottomSheet(
+  void _openGeminiChat() async {
+    await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
@@ -649,6 +649,17 @@ class _BookScreenState extends State<BookScreen> with WidgetsBindingObserver {
         cachedSkillPrompt: _cachedSkillPrompt,
       ),
     );
+    // Reload cached preferences and chat history after sheet is closed
+    final chatHistory = await _bookmarksService.loadChatHistory();
+    final apiKey = await _bookmarksService.getGeminiApiKey();
+    final model = await _bookmarksService.getGeminiModel();
+    if (mounted) {
+      setState(() {
+        _cachedChatHistory = chatHistory;
+        _cachedApiKey = apiKey;
+        _cachedSelectedModel = model;
+      });
+    }
   }
 
   @override

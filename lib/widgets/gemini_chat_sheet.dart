@@ -67,6 +67,7 @@ class _GeminiChatSheetState extends State<GeminiChatSheet> {
   ChatSession? _chatSession;
   bool _isLoading = false;
   bool _isConfiguring = false;
+  List<Map<String, dynamic>>? _overrideChatHistory;
 
   @override
   void initState() {
@@ -190,7 +191,8 @@ class _GeminiChatSheetState extends State<GeminiChatSheet> {
       );
 
       // Load conversation history from disk storage
-      final List<Map<String, dynamic>> history = widget.cachedChatHistory ??
+      final List<Map<String, dynamic>> history = _overrideChatHistory ??
+          widget.cachedChatHistory ??
           await widget.bookmarksService.loadChatHistory();
 
       // Reconstruct matching Content items to load into model's chat history session
@@ -358,9 +360,12 @@ class _GeminiChatSheetState extends State<GeminiChatSheet> {
 
     if (confirmed == true) {
       await widget.bookmarksService.saveChatHistory([]);
+      setState(() {
+        _messages.clear();
+        _overrideChatHistory = [];
+      });
       if (_apiKey != null) {
         // Re-initialize a clean Gemini session
-        _messages.clear();
         _initGemini(_apiKey!, null);
       }
     }
