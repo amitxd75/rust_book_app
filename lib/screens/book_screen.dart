@@ -66,10 +66,13 @@ class _BookScreenState extends State<BookScreen> {
                     style = document.createElement('style');
                     style.id = 'glass-theme-overrides';
                     style.innerHTML = `
-                      /* Aggressively force all theme variables and theme container classes to transparent */
-                      :root, .theme-light, .theme-coal, .theme-navy, .theme-dark, .theme-rust {
-                        --bg: transparent !important;
+                      /* Force the sidebar theme variable to solid dark to ensure menu item readability */
+                      :root {
                         --sidebar-bg: rgba(18, 20, 24, 0.98) !important;
+                      }
+                      
+                      /* Transparent backgrounds on the root theme containers */
+                      .theme-light, .theme-coal, .theme-navy, .theme-dark, .theme-rust {
                         background: transparent !important;
                         background-color: transparent !important;
                       }
