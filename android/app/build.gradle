@@ -52,6 +52,10 @@ android {
             }
         }
     }
+
+    packagingOptions {
+        doNotStrip "**/*.so"
+    }
 }
 
 flutter {
