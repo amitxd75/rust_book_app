@@ -2,10 +2,8 @@
 
 A simple dark reader app for the Rust Book with an integrated Gemini tutor.
 
-Author: Amit (amitxd)
-
 ### Features
-- Native study dashboard with reading progress & time tracker
+- Native(not entirely) study dashboard with reading progress & time tracker
 - 120Hz display refresh support
 - Highlight text selection to explain with Gemini
 - Offline mode & cache synchronization
